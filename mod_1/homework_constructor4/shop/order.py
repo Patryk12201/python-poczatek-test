@@ -20,6 +20,21 @@ class Order:
             total_price += element.calculate_price()
         return total_price
 
+    def __eq__(self, other):
+        if self.__class__ != other.__class__:
+            return NotImplemented
+
+        if len(self.order_elements) != len(other.order_elements):
+            return False
+
+        if self.client_first_name != other.client_first_name or self.client_last_name != other.client_last_name:
+            return False
+
+        for order_element in self.order_elements:
+            if order_element not in other.order_elements:
+                return False
+        return True
+
     def __str__(self):
         mark_line = "-" * 20
         order_details = f"Zamówienie złożone przez: {self.client_first_name} {self.client_last_name}"
@@ -30,6 +45,9 @@ class Order:
 
         result = "\n".join([mark_line, order_details, value_details, product_details, mark_line])
         return result
+
+    def __len__(self):
+        return len(self.order_elements)
 
 
 def generate_order():
